@@ -1,0 +1,60 @@
+/**
+ * Module stylesheets
+ */
+
+.import-file {
+    transition: all .25s ease-in-out;
+}
+
+.import-file[disabled] {
+    pointer-events: none;
+    opacity: .5;
+}
+
+ /** Same as uk-alert */
+.import-file-dragover {
+    color: #2d7091;
+    background: #ebf7fd;
+}
+
+/** Same as uk-alert-success */
+.import-file-drop {
+    color: #659f13;
+    background: #f2fae3;
+}
+
+/** Same as uk-alert-warning */
+.import-file-error {
+    color: #d85030;
+    background: #fff1f0;
+}
+
+.import-file-uploaded {
+
+}
+
+/** Imput field that looks like text */
+.uk-form select.import-form-noappearance,
+.uk-form textarea.import-form-noappearance,
+.uk-form input.import-form-noappearance {
+
+    appearance: none;
+    border: 0 none;
+    padding: 0;
+    height: auto;
+    background: transparent;
+}
+
+.import-table {
+    table-layout: fixed;
+}
+
+.import-table > thead td,
+.import-table > thead th {
+    border-bottom: 1px solid #ddd;
+}
+
+.import-table > tbody td,
+.import-table > tbody th {
+    border-bottom: 1px solid #f2f2f2;
+}

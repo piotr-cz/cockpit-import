@@ -1,0 +1,32 @@
+{
+  "name": "cockpit-import-module",
+  "version": "1.0.0-rc.1",
+  "description": "Spreadsheet import module for Cockpit CMS",
+  "main": "gulpfile.js",
+  "scripts": {
+    "help": "npm run [scriptName]",
+    "build": "cp -u ./node_modules/papaparse/{papaparse.js,papaparse.min.js} ./assets/3p/",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "travis": "jshint ./assets/js && jscs ./assets/js"
+  },
+  "author": "Piotr Konieczny",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/piotr-cz/import"
+  },
+  "dependencies": {
+    "papaparse": "^4.1.1"
+  },
+  "devDependencies": {
+    "jscs": "^2.0",
+    "jshint": "^2.8",
+    "gulp": "^3.9.0"
+  },
+  "config": {
+    "path": {
+      "src": ".",
+      "vendor": "./node_modules"
+    }
+  }
+}

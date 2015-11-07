@@ -1,0 +1,7 @@
+{
+    "name"       : "Import",
+    "version"    : "1.0.0-rc.1",
+    "description": "Module description",
+    "homepage"   : "",
+    "license"    : "MIT"
+}
