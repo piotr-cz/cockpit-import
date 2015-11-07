@@ -1,0 +1,21 @@
+{
+    "preset": "google",
+
+    "maximumLineLength": 120,
+    "validateIndentation": 4,
+
+    "excludeFiles": [
+        "node_modules/**",
+        "assets/3p/**"
+    ],
+
+    "disallowMultipleLineStrings": null,
+    "disallowSpaceAfterObjectKeys": {
+        "allExcept": ["singleline", "aligned"]
+    },
+
+    "jsDoc": {
+        "checkAnnotations": "jsdoc3",
+        "checkTypes": "strictNativeCase"
+    }
+}

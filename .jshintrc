@@ -1,0 +1,27 @@
+{
+    // @link https://github.com/jshint/jshint/blob/master/examples/.jshintrc
+
+    // Enforcing
+    "indent"        : 4,
+    "latedef"       : false,
+    "newcap"        : true,
+    "quotmark"      : "single",
+
+    // Relaxing
+    "es5"           : false,
+    "multistr"      : true,
+
+    // Environments
+    "browser"       : true,
+    "devel"         : false,
+    "jquery"        : true,
+
+    // Custom globals
+    "globals": {
+        "App"           : true,
+        "angular"       : false,
+        "google"        : false,
+        "jQuery"        : false,
+        "papaparse"     : false
+    }
+}

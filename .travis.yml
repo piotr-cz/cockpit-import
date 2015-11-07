@@ -1,0 +1,17 @@
+#
+# @link http://docs.travis-ci.com/user/languages/javascript-with-nodejs/
+#
+
+language: node_js
+
+sudo: false
+
+node_js:
+    - "4.1"
+    - "iojs"
+
+before_script:
+    - npm install
+
+script:
+    - npm run travis

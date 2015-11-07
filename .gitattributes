@@ -1,0 +1,25 @@
+#
+# Git Attributes
+#
+# Definitions useful when creating a Github releases
+# @link  http://git-scm.com/docs/gitattributes
+#
+
+# Default excludes
+.editorconfig export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+.jscsrc export-ignore
+.jshintrc export-ignore
+.travis.yml export-ignore
+
+# Metadata
+/CHANGELOG.* export-ignore
+/CONTRIBUTING.* export-ignore
+
+# Artwork
+/artwork export-ignore
+
+# Build scripts
+/gulpfile.js export-ignore
+/package.json export-ignore
