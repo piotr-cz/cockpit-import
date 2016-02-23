@@ -2,13 +2,14 @@
  * Cockpit Import module build file
  */
 
-var pkg    = require('package.json');
-var paths  = pkg.config.path;
+var gulp = require('gulp');
+var pkg = require('./package.json');
+var path = pkg.config.path;
 
 /**
  * Build task
  */
-gulp.task('build', function(cb) {
+gulp.task('build', function buildTask(cb) {
 
     // Copy vendor dist files into assets folder
     var files = [
@@ -17,7 +18,7 @@ gulp.task('build', function(cb) {
     ];
 
     gulp.src(files)
-        gulp.dest(path.src + '/assets/3p');
+        .pipe(gulp.dest(path.src + '/assets/3p'));
     ;
 });
 
