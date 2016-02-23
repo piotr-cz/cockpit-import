@@ -9,14 +9,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "travis": "jshint ./assets/js && jscs ./assets/js"
   },
-  "author": "Piotr Konieczny",
+  "author": "Piotr Konieczny <hello@piotr.cz> (http://www.piotr.cz)",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/piotr-cz/import"
   },
   "dependencies": {
-    "papaparse": "^4.1.1"
+    "papaparse": "^4.1.2"
   },
   "devDependencies": {
     "jscs": "^2.0",
