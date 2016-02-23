@@ -1,0 +1,31 @@
+{
+    "name": "piotr-cz/cockpit-import",
+    "description": "Spreadsheet import module for Cockpit CMS",
+    "homepage": "https://github.com/piotr-cz/cockpit-import",
+    "keywords": ["cockpit", "import", "module"],
+    "type": "cockpit-module",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Piotr Konieczny",
+            "email": "hello@piotr.cz",
+            "homepage": "http://www.piotr.cz"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/piotr-cz/cockpit-import/issues"
+    },
+    "require": {
+        "php": ">= 5.3.10",
+        "piotr-cz/installers": "dev-cockpit-module-installer"
+    },
+    "extra": {
+        "installer-name": "Import"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/piotr-cz/installers"
+        }
+    ]
+}

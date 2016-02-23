@@ -20,6 +20,7 @@
 # Artwork
 /artwork export-ignore
 
-# Build scripts
+# Build scripts and metadata
+/composer.json export-ignore
 /gulpfile.js export-ignore
 /package.json export-ignore
