@@ -53,6 +53,7 @@ return [
     'import.filter.text' => 'Text',
     'import.filter.select' => 'Select',
     'import.filter.boolean' => 'Boolean',
+    'import.filter.location' => 'Location',
     'import.filter.date' => 'Date',
     'import.filter.time' => 'Time',
     'import.filter.linkCollectionByname' => 'Lookup entry matching Name',
