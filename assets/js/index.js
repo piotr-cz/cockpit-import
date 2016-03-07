@@ -128,6 +128,8 @@
                 $filter('selectCockpitFilter'),
                 // Boolean
                 $filter('booleanCockpitFilter'),
+                // Location
+                $filter('locationCockpitFilter'),
                 // Collection link
                 $filter('linkCollectionBynameCockpitFilter')
             ];
@@ -192,16 +194,20 @@
                         var filter = $filter('noopCockpitFilter');
 
                         switch (field.type) {
+                            case 'select':
+                                filter = $filter('selectCockpitFilter');
+                                break;
+
                             case 'boolean':
                                 filter = $filter('booleanCockpitFilter');
                                 break;
 
-                            case 'link-collection':
-                                filter = $filter('linkCollectionBynameCockpitFilter');
+                            case 'location':
+                                filter = $filter('locationCockpitFilter');
                                 break;
 
-                            case 'select':
-                                filter = $filter('selectCockpitFilter');
+                            case 'link-collection':
+                                filter = $filter('linkCollectionBynameCockpitFilter');
                                 break;
 
                             default:
@@ -559,8 +565,10 @@
                     if (dataMapperRow.field.required && dataMapperRow.column === undefined) {
                         doesNotValidate = true;
                         App.notify(
-                            'Please select column for required field %s'
-                                .replace('%s', dataMapperRow.field.label || dataMapperRow.field.name),
+                            App.i18n.get(
+                                'Please select column for required field %s',
+                                dataMapperRow.field.label || dataMapperRow.field.name
+                            ),
                             'danger'
                         );
 
@@ -587,7 +595,12 @@
                             $scope.process.progress = percentage.toFixed(2);
                         }.bind(this),
 
-                        onError   : function() {
+                        onError   : function(dataRow, message, index) {
+                            App.notify(message, 'warning');
+
+                            if (window.console) {
+                                window.console.warn(message);
+                            }
                         },
 
                         onComplete: function() {
@@ -612,6 +625,8 @@
             /**
              * Input -> filter -> output
              *
+             * Similar process must happen in Processor.getEntryData
+             *
              * @param {Object} dataMapperRow
              * @param {Function} dataMapperRow.filter
              * @param {*} dataMapperRow.input
@@ -619,10 +634,35 @@
              */
             function applyFilter(dataMapperRow) {
 
-                if (dataMapperRow.filter) {
-                    dataMapperRow.output = dataMapperRow.filter(dataMapperRow.input, dataMapperRow.field);
-                } else {
+                var deferred;
+                var promise;
+
+                // No filter
+                if (!dataMapperRow.filter) {
                     dataMapperRow.output = dataMapperRow.input;
+                // Stateless filter
+                } else if (!dataMapperRow.filter.$stateful) {
+                    dataMapperRow.output = dataMapperRow.filter(dataMapperRow.input, dataMapperRow.field);
+                // Stateful filter
+                } else {
+                    deferred = $q.defer();
+
+                    dataMapperRow.output = dataMapperRow.filter(dataMapperRow.input, dataMapperRow.field, {
+                        deferred: deferred
+                    });
+
+                    // This itself triggers $scope.digest(), as long as filters' output is updated.
+                    // Otherwise use dataMapperRow.output = output.
+                    deferred.promise
+                        .then(function(output) {})
+                        .catch(function(error) {
+                            error = (error || 'Unknown error');
+
+                            App.notify(
+                                App.i18n.get('import.notify.Import field error', error),
+                                'warning'
+                            );
+                        });
                 }
 
                 return;

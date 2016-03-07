@@ -11,6 +11,7 @@ return [
     'import.notify.Error loading file' => 'Error loading file',
     'import.notify.Please select column' => 'Please select column for required field %s',
     'import.notify.Canont use this filter' => 'Cannot use this filter for %s.',
+    'import.notify.Import field error' => 'Field error: %s',
 
     // Buttons
     'import.btn.Import' => 'Import',
@@ -52,6 +53,7 @@ return [
     'import.filter.text' => 'Text',
     'import.filter.select' => 'Select',
     'import.filter.boolean' => 'Boolean',
+    'import.filter.location' => 'Location',
     'import.filter.date' => 'Date',
     'import.filter.time' => 'Time',
     'import.filter.linkCollectionByname' => 'Lookup entry matching Name',

@@ -2,9 +2,11 @@
 
     'use strict';
 
-    App.module.factory('Processor', ['$http', function ProcessorFactory($http) {
+    App.module.factory('Processor', ['$q', '$http', '$timeout', function ProcessorFactory($q, $http, $timeout) {
 
+        Processor.$q = $q;
         Processor.$http = $http;
+        Processor.$timeout = $timeout;
 
         return Processor;
 
@@ -97,85 +99,6 @@
     };
 
     /**
-     * Convert row data to entry
-     *
-     * @protected
-     * @param {Object} dataRow
-     * @param {Function} callback
-     * @return {Object}
-     */
-    Processor.prototype.getEntryData = function(dataRow, callback) {
-
-        // Static data
-        var entry = {};
-
-        var processedSlugs = 0;
-        var totalSlugs     = this.dataMapper.filter(function(dataMapperRow) {
-            return (dataMapperRow.field.slug && dataMapperRow.slugColumn !== undefined);
-        }).length;
-
-        // Fields
-        this.dataMapper.forEach(function(dataMapperRow) {
-
-            // Get data from row and add filter
-            if (dataMapperRow.column !== undefined) {
-
-                dataMapperRow.input = dataRow[dataMapperRow.column];
-
-                if (dataMapperRow.filter) {
-                    dataMapperRow.output = dataMapperRow.filter(dataMapperRow.input, dataMapperRow.field);
-                } else {
-                    dataMapperRow.output = dataMapperRow.input;
-                }
-
-                entry[dataMapperRow.field.name] = dataMapperRow.output;
-            }
-
-            // Add in locales
-            if (dataMapperRow.field.localize && dataMapperRow.localizations.length) {
-
-                dataMapperRow.localizations.forEach(function(localization) {
-
-                    if (localization.column) {
-
-                        // Copy over data into localization
-                        localization.output = dataRow[localization.column];
-
-                        // Store in entry
-                        entry[dataMapperRow.field.name + '_' + localization.code] = localization.output;
-                    }
-                });
-            }
-
-            // Process slug
-            if (dataMapperRow.field.slug && dataMapperRow.slugColumn !== undefined) {
-
-                // Save in input
-                dataMapperRow.slugInput = dataRow[dataMapperRow.slugColumn];
-
-                // note: Using setTimeout because of instant DOM update-read is involved.
-                // see: http://stackoverflow.com/questions/779379/why-is-settimeoutfn-0-sometimes-useful
-                window.setTimeout(function() {
-                    entry[dataMapperRow.field.name + '_slug'] = dataMapperRow.slugOutput;
-
-                    // If this is last async function, invoke callback.
-                    if (++processedSlugs >= totalSlugs) {
-                        callback.call(this, entry);
-                    }
-                }.bind(this), 10);
-            }
-
-        }, this);
-
-        // When there are no async functions, invoke callback.
-        if (!totalSlugs) {
-            callback.call(this, entry);
-        }
-
-        return entry;
-    };
-
-    /**
      * Proccess given row
      * [async]
      *
@@ -185,45 +108,166 @@
      */
     Processor.prototype.processRow = function(dataRow) {
 
-        // V1 (using async data)
-        this.getEntryData(dataRow, function(entryData) {
+        /** @type {Object} Entry data */
+        var entry = {};
+        /** @type {Array} promises stack */
+        var promises = [];
 
-            Processor.$http.post(
-                App.route('/api/collections/saveentry'),
-                {
-                    collection: {
-                        _id: this.collectionId
-                    },
-                    entry     : entryData
-                }
-            /**
-                // Test
-                App.route('/api/collections/findOne'),
-                {
-                    filter: {
-                        _id: this.collectionId
+        // Loop trough mapper fields
+        this.dataMapper.forEach(function(mapperRow, i) {
+
+            // Merge in data collected synchronously
+            this.decorateEntry(entry, promises, dataRow, mapperRow);
+        }, this);
+
+        // Save
+        Processor.$q.all(promises)
+
+            .then(angular.bind(this, function(entryDataRows) {
+
+                // Prepend data collected synchronously
+                entryDataRows.unshift({});
+                entryDataRows.unshift(entry);
+
+                // Append data collected asynchronously
+                var entryData = angular.extend.apply(undefined, entryDataRows);
+
+                Processor.$http.post(
+                    App.route('/api/collections/saveentry'),
+                    {
+                        collection: {
+                            _id: this.collectionId
+                        },
+                        entry     : entryData
                     }
-                },
-                {
-                    responseType: 'json'
-                }
-            */
-            )
-                .success(function(data, status, headers, config) {
-                    this.finishedProcessingEntry(dataRow);
-                }.bind(this))
+                /*
+                    // Test
+                    App.route('/api/collections/findOne'),
+                    {
+                        filter: {
+                            _id: this.collectionId
+                        }
+                    },
+                    {
+                        responseType: 'json'
+                    }
+                /**/
+                )
+                    .success(angular.bind(this, function(data, status, headers, config) {
+                        this.finishedProcessingEntry(dataRow);
+                    }))
 
-                .error(function(data, status, headers, config) {
-                    this.finishedProcessingEntry(dataRow, data);
-                }.bind(this))
-            ;
-        });
+                    .error(angular.bind(function(data, status, headers, config) {
+                        this.finishedProcessingEntry(dataRow, data);
+                    }))
+                ;
+
+                return entryData;
+            }))
+            // Promise should not have any catches
+            .catch(angular.bind(this, function(error) {
+
+                error = (error || 'Unknown error');
+
+                this.finishedProcessingEntry(
+                    dataRow,
+                    App.i18n.get('import.notify.Import field error', error)
+                );
+            }));
 
         return this;
     };
 
     /**
+     * Process entry cell
+     * [async]
+     *
+     * @param {Object} entry
+     * @param {Array} promises - Promises stack for async results
+     * @param {Array} dataRow
+     * @param {Object} mapperRow
+     *
+     * @return {Object} entry
+     */
+    Processor.prototype.decorateEntry = function(entryData, promises, dataRow, mapperRow) {
+
+        var deferred;
+
+        // Filter
+        if (mapperRow.column !== undefined) {
+
+            mapperRow.input = dataRow[mapperRow.column];
+
+            // Filter
+            if (!mapperRow.filter) {
+                mapperRow.output = mapperRow.input;
+            // Stateless filter
+            } else if (!mapperRow.filter.$stateful) {
+                mapperRow.output = mapperRow.filter(mapperRow.input, mapperRow.field);
+            // Stateful filter
+            } else {
+                deferred = Processor.$q.defer();
+
+                mapperRow.output = mapperRow.filter(mapperRow.input, mapperRow.field, {deferred: deferred});
+
+                // Add async output from filter
+                promises.push(
+                    deferred.promise.then(function(filterOutput) {
+
+                        entryData[mapperRow.field.name] = filterOutput;
+
+                        return entryData;
+                    })
+                );
+
+                // Add delay
+                if (mapperRow.filter.delay) {
+                    promises.push(Processor.$timeout(function() {}, mapperRow.filter.delay));
+                }
+            }
+
+            // Set data so it's svailable for following processing
+            entryData[mapperRow.field.name] = mapperRow.output;
+        }
+
+        // Add in locales
+        if (mapperRow.field.localize && mapperRow.localizations.length) {
+
+            mapperRow.localizations.forEach(function(localization) {
+
+                if (localization.column) {
+
+                    // Copy over data into localization
+                    localization.output = dataRow[localization.column];
+
+                    // Store in entry
+                    entryData[mapperRow.field.name + '_' + localization.code] = localization.output;
+                }
+            });
+        }
+
+        // Process slug
+        if (mapperRow.field.slug && mapperRow.slugColumn !== undefined) {
+
+            // Save in input
+            mapperRow.slugInput = dataRow[mapperRow.slugColumn];
+
+            promises.push(
+                Processor.$timeout(function() {
+
+                    entryData[mapperRow.field.name + '_slug'] = mapperRow.slugOutput;
+
+                    return entryData;
+                }, 10)
+            );
+        }
+
+        return entryData;
+    };
+
+    /**
      * Finalize tasks after entry has (not) been cerated.
+     * When one task is finished, another is started
      *
      * @protected
      * @param {Object} dataRow
@@ -242,7 +286,7 @@
 
         // Mark failure
         if (errorDetails && typeof this.callbacks.onError == 'function') {
-            this.callbacks.onError(dataRow, erorDetails);
+            this.callbacks.onError(dataRow, errorDetails, rowIndex);
         }
 
         if (typeof this.callbacks.onProgress == 'function') {

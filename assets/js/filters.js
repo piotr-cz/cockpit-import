@@ -80,8 +80,7 @@
 
             if (field.options === undefined) {
                 App.notify(
-                    App.i18n.get('import.notify.Canont use this filter')
-                        .replace('%s', field.label || field.name),
+                    App.i18n.get('import.notify.Canont use this filter', field.label || field.name),
                     'warning'
                 );
             } else if (field.options.indexOf(input) >= 0) {
@@ -111,6 +110,149 @@
     }]);
 
     /**
+     * Location filter
+     * Delay should be at lest 10 queries per second
+     *
+     * @function
+     *
+     * @see https://developers.google.com/maps/documentation/geocoding/usage-limits
+     */
+    angular.module('cockpit.filters').filter('locationCockpitFilter',
+    ['$q', '$document', '$timeout', function($q, $document, $timeout) {
+
+        locationCockpitFilter.label = App.i18n.get('import.filter.location');
+        locationCockpitFilter.supports = ['location'];
+        locationCockpitFilter.$stateful = true;
+        locationCockpitFilter.delay = 250;
+
+        /** @type {google.maps.Geocoder} Cached geocoder */
+        var geocoder;
+        var cache = {};
+
+        loadApi()
+            .then(function() {
+                geocoder = new google.maps.Geocoder();
+            });
+
+        return locationCockpitFilter;
+
+        /**
+         * @param {string} input - Data input
+         * @param {Object} field
+         * @param {string} field.label
+         * @param {boolean} field.lst
+         * @param {string} field.name
+         * @param {boolean} field.required
+         * @param {string} field.type
+         * @param {Object} field.options - Field specific options
+         * @param {Object} field.options.deferred
+         */
+        function locationCockpitFilter(input, field, options) {
+
+            options = (options || {});
+
+            var output = {lat: undefined, lng: undefined, address: undefined};
+
+            // Check in cache
+            if (cache.hasOwnProperty[input]) {
+
+                options.deferred.resolve(cache[input]);
+
+                return cache[input];
+            }
+
+            geocoder.geocode({address: input}, function(results, status) {
+
+                var foundLocation;
+
+                if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
+
+                    var result = results.shift();
+                    // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+                    var data = {
+                        lat    : result.geometry.location.lat().toFixed(10) / 1,
+                        lng    : result.geometry.location.lng().toFixed(10) / 1,
+                        address: result.formatted_address
+                    };
+                    // jscs:enable
+
+                    angular.extend(output, data);
+
+                    cache[input] = data;
+
+                    if (options.deferred) {
+                        options.deferred.resolve(data);
+                    }
+
+                // Probably status is google.maps.GeocoderStatus.OVER_QUERY_LIMIT
+                } else if (options.deferred) {
+
+                    options.deferred.reject(status);
+                }
+
+                return;
+            });
+
+            return output;
+        }
+
+        /**
+         * Load Google JS API and Google Maps API
+         *
+         * @return {Object} Promise
+         */
+        function loadApi() {
+
+            var deferred = $q.defer();
+            var locale   = $document.prop('documentElement').lang;
+            var script;
+
+            // Maps have alreadby been loaded
+            if (window.google && window.google.maps) {
+
+                deferred.resolve();
+
+            // JS API is available
+            } else if (window.google) {
+
+                loadMapsApi();
+
+            // Need to load both
+            } else {
+
+                script = window.document.createElement('script');
+
+                script.async = true;
+
+                script.onload = loadMapsApi;
+
+                script.onerror = function() {
+
+                    App.notify(App.i18n.get('Failed loading google maps api.'), 'warning');
+
+                    deferred.reject();
+                };
+
+                script.src = 'https://www.google.com/jsapi';
+
+                document.body.appendChild(script);
+            }
+
+            return deferred.promise;
+
+            function loadMapsApi() {
+                // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+                google.load('maps', '3', {other_params: 'libraries=places&language=' + locale, callback: function() {
+                    // jscs:enable
+                    if (google.maps.places) {
+                        deferred.resolve();
+                    }
+                }});
+            }
+        }
+    }]);
+
+    /**
      * Make sure it's YYYY-MM-DD
      *
      * @see http://getuikit.com/docs/datepicker.html
@@ -119,6 +261,8 @@
 
         dateCockpitFilter.label = App.i18n.get('import.filter.date');
         dateCockpitFilter.supports = ['date'];
+
+        // Load Maps API
 
         return dateCockpitFilter;
 
@@ -190,14 +334,13 @@
             }
         )
             .success(function(data) {
+
                 collections = data;
 
                 // Get entries of all collections
-
                 collections.forEach(function(collection) {
 
                     // TODO: something with collection.fields
-
                     $http.post(
                         App.route('/api/collections/entries'),
                         {
