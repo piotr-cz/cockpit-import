@@ -1,6 +1,6 @@
 {
   "name": "cockpit-import-module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Spreadsheet import module for Cockpit CMS",
   "main": "gulpfile.js",
   "scripts": {
