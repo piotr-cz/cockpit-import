@@ -61,7 +61,7 @@ Module for importing spreadsheet as collection entries in [Cockpit CMS](http://g
 
 ## Issues/ Feature requirements
 
-Submit issue or feature requirement [here](https://github.com/piotr-cz/import/issues)
+Submit issue or feature requirement [here](https://github.com/piotr-cz/cockpit-import/issues)
 
 [Latest](https://github.com/piotr-cz/import/archive/master.zip) development version
 
