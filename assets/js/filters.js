@@ -372,7 +372,7 @@
 
         function linkCollectionBynameCockpitFilter(input, field, options) {
 
-            options = (options || {lookupKey: 'name'});
+            options = (options || {lookupKey: 'Name'});
 
             var foundEntryId;
 
