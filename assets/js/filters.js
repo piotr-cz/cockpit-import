@@ -381,16 +381,18 @@
                 return foundEntryId;
             }
             if (field.multiple === true) {
-                foundEntryId = [];
-                var entries = input.split('|');
+                if (input) {
+                    foundEntryId = [];
+                    var entries = input.split('|');
 
-                entries.forEach(function(val) {
-                    collectionEntries[field.collection].forEach(function(collectionEntry) {
-                        if (collectionEntry[options.lookupKey] == val) {
-                            foundEntryId.push(collectionEntry._id);
-                        }
+                    entries.forEach(function(val) {
+                        collectionEntries[field.collection].forEach(function(collectionEntry) {
+                            if (collectionEntry[options.lookupKey] == val) {
+                                foundEntryId.push(collectionEntry._id);
+                            }
+                        });
                     });
-                });
+                }
             } else {
                 collectionEntries[field.collection].forEach(function(collectionEntry) {
                     if (collectionEntry[options.lookupKey] == input) {
