@@ -382,12 +382,14 @@
             }
             if (field.multiple === true) {
                 if (input) {
-                    foundEntryId = [];
                     var entries = input.split(options.separator);
 
                     entries.forEach(function(val) {
                         collectionEntries[field.collection].forEach(function(collectionEntry) {
                             if (collectionEntry[options.lookupKey] == val) {
+                                if (!foundEntryId) {
+                                    foundEntryId = [];
+                                }
                                 foundEntryId.push(collectionEntry._id);
                             }
                         });
