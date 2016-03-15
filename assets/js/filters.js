@@ -391,15 +391,13 @@
                         }
                     });
                 });
-            }
-            else {
+            } else {
                 collectionEntries[field.collection].forEach(function(collectionEntry) {
                     if (collectionEntry[options.lookupKey] == input) {
                         foundEntryId = collectionEntry._id;
                     }
                 });
             }
-
 
             return foundEntryId;
         }
