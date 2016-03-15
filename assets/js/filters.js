@@ -380,9 +380,9 @@
             if (!field.hasOwnProperty('collection') || !collectionEntries.hasOwnProperty(field.collection)) {
                 return foundEntryId;
             }
-            if (field.multiple==true) {
+            if (field.multiple === true) {
                 foundEntryId = [];
-                var entries = input.split("|");
+                var entries = input.split('|');
 
                 entries.forEach(function(val) {
                     collectionEntries[field.collection].forEach(function(collectionEntry) {
