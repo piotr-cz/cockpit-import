@@ -380,13 +380,26 @@
             if (!field.hasOwnProperty('collection') || !collectionEntries.hasOwnProperty(field.collection)) {
                 return foundEntryId;
             }
+            if (field.multiple==true) {
+                foundEntryId = [];
+                var entries = input.split("|");
 
-            collectionEntries[field.collection].forEach(function(collectionEntry) {
+                entries.forEach(function(val) {
+                    collectionEntries[field.collection].forEach(function(collectionEntry) {
+                        if (collectionEntry[options.lookupKey] == val) {
+                            foundEntryId.push(collectionEntry._id);
+                        }
+                    });
+                });
+            }
+            else {
+                collectionEntries[field.collection].forEach(function(collectionEntry) {
+                    if (collectionEntry[options.lookupKey] == input) {
+                        foundEntryId = collectionEntry._id;
+                    }
+                });
+            }
 
-                if (collectionEntry[options.lookupKey] == input) {
-                    foundEntryId = collectionEntry._id;
-                }
-            });
 
             return foundEntryId;
         }
