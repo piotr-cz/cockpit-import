@@ -372,7 +372,7 @@
 
         function linkCollectionBynameCockpitFilter(input, field, options) {
 
-            options = (options || {lookupKey: 'name'});
+            options = (options || {lookupKey: 'name', separator: '|'});
 
             var foundEntryId;
 
@@ -383,7 +383,7 @@
             if (field.multiple === true) {
                 if (input) {
                     foundEntryId = [];
-                    var entries = input.split('|');
+                    var entries = input.split(options.separator);
 
                     entries.forEach(function(val) {
                         collectionEntries[field.collection].forEach(function(collectionEntry) {
