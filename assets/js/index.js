@@ -342,7 +342,9 @@
                     headersData.forEach(function(header, i) {
 
                         availableColumns.push({
-                            label: ($scope.importOptions.hasHeader) ? header : 'Column № %s'.replace('%s', i),
+                            label: ($scope.importOptions.hasHeader) ?
+                                header :
+                                App.i18n.get('import.header.ColumnNo', i),
                             value: i
                         });
                     }, this);
@@ -404,6 +406,7 @@
                 }
             });
 
+            // Use backend to parse file
             if (false) {
                 $scope.$watch('file', function(fileData, oldFileData) {
 
@@ -439,7 +442,9 @@
                             headersData.forEach(function(header, i) {
 
                                 availableColumns.push({
-                                    label: ($scope.importOptions.hasHeader) ? header : 'Column № %s'.replace('%s', i),
+                                    label: ($scope.importOptions.hasHeader) ?
+                                        header :
+                                        App.i18n.get('import.header.ColumnNo', i),
                                     value: i
                                 });
                             }, this);

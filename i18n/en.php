@@ -37,9 +37,8 @@ return [
     'import.label.Offset' => 'Offset',
     'import.label.Limit' => 'Limit',
     'import.label.Buffer' => 'Buffer',
-    'import.label.Add file Info' => 'Add a CSV or JSON spreadsheet file by dropping it here or',
+    'import.label.Add file Info' => 'Add a CSV spreadsheet or Cockpit export JSON file by dropping it here or',
     'import.label.Add file Select' => 'selecting one',
-
 
     // Headers
     'import.header.Label' => 'Label',
@@ -47,6 +46,7 @@ return [
     'import.header.Import column' => 'Import column',
     'import.header.Filter' => 'Filter',
     'import.header.Output' => 'Output',
+    'import.header.ColumnNo' => 'Column № %s',
 
     // Filters
     'import.filter.noop' => '- None -',
