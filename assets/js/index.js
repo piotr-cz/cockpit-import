@@ -221,7 +221,7 @@
                             additionalLocales.forEach(function(locale) {
 
                                 localizations.push({
-                                    code  : locale,
+                                    code: locale,
                                     output: '',
                                     filter: filter,
                                     column: undefined
@@ -530,7 +530,7 @@
                 // Sanitize
                 $scope.processOptions.offset = (offset === null || offset === undefined) ?
                     0 :
-                    Math.min(tableData.length - ($scope.processOptions.limit || 0) , parseInt(offset))
+                    Math.min(tableData.length - 1 - ($scope.processOptions.limit || 0), parseInt(offset))
                 ;
 
                 // Update table
