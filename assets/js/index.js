@@ -221,7 +221,7 @@
                             additionalLocales.forEach(function(locale) {
 
                                 localizations.push({
-                                    code: 'en',
+                                    code  : locale,
                                     output: '',
                                     filter: filter,
                                     column: undefined
