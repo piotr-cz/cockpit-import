@@ -190,7 +190,7 @@
                     // Build data mapper matrix
                     $scope.collection.fields.forEach(function(field, i) {
 
-                        // Try to match filter
+                        // Try to pick filter by field type
                         var filter = $filter('noopCockpitFilter');
 
                         switch (field.type) {
@@ -281,11 +281,16 @@
 
                     // JSON.parse
                     case 'json':
-                        parseFn = parser.csv;
+                        parseFn = parser.json;
 
                         options = {
                             encoding: $scope.importOptions.encoding
                         };
+
+                        // Overwrite all datamapper filters by noop
+                        $scope.dataMapper.forEach(function(field, i) {
+                            field.filter = $filter('noopCockpitFilter');
+                        }, this);
 
                         break;
                 }

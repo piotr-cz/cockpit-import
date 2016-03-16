@@ -380,7 +380,9 @@
             if (!field.hasOwnProperty('collection') || !collectionEntries.hasOwnProperty(field.collection)) {
                 return foundEntryId;
             }
+
             if (field.multiple === true) {
+
                 if (input) {
                     var entries = input.split(options.separator);
 
