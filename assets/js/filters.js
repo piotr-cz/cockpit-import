@@ -372,7 +372,7 @@
 
         function linkCollectionBynameCockpitFilter(input, field, options) {
 
-            options = (options || {lookupKey: 'name'});
+            options = (options || {lookupKey: 'name', separator: '|'});
 
             var foundEntryId;
 
@@ -380,13 +380,28 @@
             if (!field.hasOwnProperty('collection') || !collectionEntries.hasOwnProperty(field.collection)) {
                 return foundEntryId;
             }
+            if (field.multiple === true) {
+                if (input) {
+                    var entries = input.split(options.separator);
 
-            collectionEntries[field.collection].forEach(function(collectionEntry) {
-
-                if (collectionEntry[options.lookupKey] == input) {
-                    foundEntryId = collectionEntry._id;
+                    entries.forEach(function(val) {
+                        collectionEntries[field.collection].forEach(function(collectionEntry) {
+                            if (collectionEntry[options.lookupKey] == val) {
+                                if (!foundEntryId) {
+                                    foundEntryId = [];
+                                }
+                                foundEntryId.push(collectionEntry._id);
+                            }
+                        });
+                    });
                 }
-            });
+            } else {
+                collectionEntries[field.collection].forEach(function(collectionEntry) {
+                    if (collectionEntry[options.lookupKey] == input) {
+                        foundEntryId = collectionEntry._id;
+                    }
+                });
+            }
 
             return foundEntryId;
         }
