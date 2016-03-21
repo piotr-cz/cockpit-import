@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [v1.1.1] - 2016-03-21
 ### Fixed
 - Import from Cockpit export JSON
 - Mapping additional languages
@@ -25,6 +27,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://gitub.com/piotr-cz/cockpit-import/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.1...HEAD
+[v1.1.1]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.0...v1.1.1
 [v1.1.0]: https://github.com/piotr-cz/cockpit-import/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/piotr-cz/cockpit-import/compare/v1.0.0-rc.1...v1.0.0
