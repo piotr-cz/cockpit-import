@@ -327,8 +327,7 @@
 
         $http.post(
             App.route('/api/collections/find'),
-            {
-            },
+            {},
             {
                 responseType: 'json'
             }
