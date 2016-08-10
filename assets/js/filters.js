@@ -103,9 +103,14 @@
 
         return booleanCockpitFilter;
 
+        /**
+         * @param {string} input - Data input
+         *
+         * @return {Boolean}
+         */
         function booleanCockpitFilter(input) {
 
-            return Number(input == '1' || !!input);
+            return (input == '1' || !!input);
         }
     }]);
 
@@ -123,7 +128,7 @@
         locationCockpitFilter.label = App.i18n.get('import.filter.location');
         locationCockpitFilter.supports = ['location'];
         locationCockpitFilter.$stateful = true;
-        locationCockpitFilter.delay = 250;
+        locationCockpitFilter.delay = 1e3;
 
         /** @type {google.maps.Geocoder} Cached geocoder */
         var geocoder;
@@ -146,6 +151,8 @@
          * @param {string} field.type
          * @param {Object} field.options - Field specific options
          * @param {Object} field.options.deferred
+         *
+         * @return {Object}
          */
         function locationCockpitFilter(input, field, options) {
 
@@ -241,13 +248,22 @@
             return deferred.promise;
 
             function loadMapsApi() {
+
+                var params = [
+                    'libraries=places',
+                    'language=' + locale
+                ];
+
+                if (window.GOOGLE_MAPS_API_KEY) {
+                    params.unshift('key=' + window.GOOGLE_MAPS_API_KEY);
+                }
+
                 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
-                google.load('maps', '3', {other_params: 'libraries=places&language=' + locale, callback: function() {
-                    // jscs:enable
-                    if (google.maps.places) {
-                        deferred.resolve();
-                    }
-                }});
+                google.load('maps', '3', {
+                    other_params: params.join('&'),
+                    callback    : deferred.resolve
+                });
+                // jscs:enable
             }
         }
     }]);
@@ -266,6 +282,11 @@
 
         return dateCockpitFilter;
 
+        /**
+         * @param {string}
+         *
+         * @return {string} - In format <yyyy-mm-dd>
+         */
         function dateCockpitFilter(input) {
 
             // Validate date
@@ -297,10 +318,15 @@
 
         return timeCockpitFilter;
 
+        /**
+         * @param {string}
+         *
+         * @return {string} - In format <hh:ii>
+         */
         function timeCockpitFilter(input) {
 
             // Validate time
-            var date = '2000-01-01\\T' + input;
+            var date = new Date('2000-01-01\\T' + input);
             var formatted;
 
             // Check that it's not Invalid Date
