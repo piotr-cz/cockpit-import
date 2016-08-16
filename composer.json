@@ -17,11 +17,10 @@
     },
     "require": {
         "php": ">= 5.3.10",
-        "composer/installers": "dev-cockpit-module-installer"
+        "composer/installers": "dev-master#1c0cdf3ecd2ed01cb3375902e62fe641a9ab68cb"
     },
     "suggest": {
-        "aheinze/cockpit": "Please install Cockpit before installing this module",
-        "piotr-cz/installers": "Please add this to your root composer.json as vcs repository until #284 is resolved"
+        "aheinze/cockpit": "Please install Cockpit before installing this module"
     },
     "extra": {
         "installer-name": "Import"

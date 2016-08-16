@@ -1,7 +1,9 @@
 {
     "name"       : "Import",
-    "version"    : "1.0.0-rc.1",
-    "description": "Module description",
-    "homepage"   : "",
+    "version"    : "1.1.1",
+    "description": "Spreadsheet import module",
+    "homepage"   : "https://github.com/piotr-cz/cockpit-import",
+    "check_url"  : "https://raw.github.com/piotr-cz/cockpit-import/master/package.json",
+    "repo"       : null,
     "license"    : "MIT"
 }
