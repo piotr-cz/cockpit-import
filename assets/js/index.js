@@ -609,7 +609,7 @@
                             App.notify(message, 'warning');
 
                             if (window.console) {
-                                window.console.warn(message);
+                                window.console.warn(message, dataRow);
                             }
                         },
 

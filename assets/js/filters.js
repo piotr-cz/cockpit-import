@@ -106,7 +106,7 @@
         /**
          * @param {string} input - Data input
          *
-         * @return {Boolean}
+         * @return {boolean}
          */
         function booleanCockpitFilter(input) {
 
