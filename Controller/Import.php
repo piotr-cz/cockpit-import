@@ -13,14 +13,18 @@ class Import extends \Cockpit\Controller
     {
         // $config = cockpit('import')->getConfig();
         $docs = $this->app->db->find('common/collections', []);
-        $locales = $this->app->db->getKey("cockpit/settings", "cockpit.locales", []);
+        $locales = $this->app->db->getKey('cockpit/settings', 'cockpit.locales', []);
         $selected = $this->getSelectedCollection($docs);
+        $gmapskey = $this->app->db->getKey('cockpit/settings', 'cockpit.gmaps.key', '');
+        $moduleMetadata = json_decode($this->app->helper('fs')->read('modules:addons/Import/module.json'));
 
         // data: name, sortfield, sortorder, slug, _id
         return $this->render('import:views/index.php', [
             'collections'  => $docs->toArray(),
             'locales'      => $locales,
             'collectionId' => $selected['_id'],
+            'gmapskey'     => $gmapskey,
+            'moduleMetadata' => $moduleMetadata,
         ]);
     }
 

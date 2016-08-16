@@ -5,28 +5,21 @@
 ?>
 @start('header')
 
-    {{ $app->assets(['import:assets/import.css']) }}
+    {{ $app->assets(['import:assets/import.css'], $meta->version) }}
 
-    {{ $app->assets(['import:assets/3p/papaparse.js']) }}
+    {{ $app->assets(['import:assets/3p/papaparse.js'], $meta->version) }}
 
-    {{ $app->assets(['import:assets/import.js']) }}
-    {{ $app->assets(['import:assets/js/filters.js']) }}
-    {{ $app->assets(['import:assets/js/file.directive.js']) }}
-    {{ $app->assets(['import:assets/js/Processor.factory.js']) }}
-    {{ $app->assets(['import:assets/js/Parser.factory.js']) }}
-
-    {{ $app->assets(['import:assets/js/index.js']) }}
-
+    {{ $app->assets(['import:assets/import.js', 'import:assets/js/filters.js', 'import:assets/js/file.directive.js', 'import:assets/js/Processor.factory.js', 'import:assets/js/Parser.factory.js', 'import:assets/js/index.js'], $meta->version)}}
 
     <script>
         // jshint ignore:start
-        var LOCALES       = {{ json_encode($locales) }};
-        var COLLECTION_ID = {{ json_encode($collectionId) }};
+        var LOCALES             = {{ json_encode($locales) }};
+        var COLLECTION_ID       = {{ json_encode($collectionId) }};
+        var GOOGLE_MAPS_API_KEY = '{{ $gmapskey }}';
         // jshint ignore:end
     </script>
 
 @end('header')
-<script src="<?= $app->pathToUrl('hello') ?> "></script>
 <div data-ng-controller="importController">
     <nav class="uk-navbar">
         <span class="uk-hidden-small uk-navbar-brand">@lang('import.title.Import')</span>
