@@ -6,6 +6,8 @@
  */
 (function($, angular, App) {
 
+    'use strict';
+
     /**
      * ImportController
      * @class
@@ -244,7 +246,7 @@
                             localizations   : localizations
                         });
 
-                    }, this);
+                    });
                 }
             });
 
@@ -335,7 +337,7 @@
 
                     response.data.forEach(function(row, i) {
                         tableData[i] = row;
-                    }, this);
+                    });
 
                     availableColumns.length = 1;
 
@@ -347,7 +349,7 @@
                                 App.i18n.get('import.header.ColumnNo', i),
                             value: i
                         });
-                    }, this);
+                    });
 
                     $scope.$apply(function() {
 
@@ -406,6 +408,7 @@
                 }
             });
 
+            /*
             // Use backend to parse file
             if (false) {
                 $scope.$watch('file', function(fileData, oldFileData) {
@@ -453,6 +456,7 @@
                     ;
                 });
             }
+            */
 
             //// Methods
 

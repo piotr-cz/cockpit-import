@@ -8,6 +8,8 @@
  */
 (function(angular, App) {
 
+    'use strict';
+
     /*
     text,
     select

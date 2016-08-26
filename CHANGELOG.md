@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [v1.1.2] - 2016-08-16
 ### Added
-- Use Google maps API Key if available
+- Use Google maps API Key if available (see https://github.com/COCOPi/cockpit/pull/423)
 
 ### Fixed
 - Assets handling in Cockpit view
