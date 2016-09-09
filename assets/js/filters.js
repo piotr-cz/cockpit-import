@@ -172,8 +172,6 @@
 
             geocoder.geocode({address: input}, function(results, status) {
 
-                var foundLocation;
-
                 if (status === google.maps.GeocoderStatus.OK && results.length > 0) {
 
                     var result = results.shift();
