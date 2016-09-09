@@ -40,8 +40,9 @@ class Import extends \Cockpit\Controller
             return null;
         }
 
+        // Compare referrer without query to generated route for collection entries
         foreach ($docs->toArray() as $doc) {
-            if ($_SERVER['HTTP_REFERER'] == $this->app['site_url'] . $this->app->routeUrl('collections/entries/' . $doc['_id'])) {
+            if (strstr($_SERVER['HTTP_REFERER'], '?', true) == $this->app['site_url'] . $this->app->routeUrl('collections/entries/' . $doc['_id'])) {
                 return $doc;
             }
         }
