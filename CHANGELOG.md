@@ -4,6 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [v1.1.3] - 2016-09-09
+### Added
+- Support for composer installation [04401aa]
+- Auto populate collection when coming from entry view [e983efc]
+
 ## [v1.1.2] - 2016-08-16
 ### Added
 - Use Google maps API Key if available (see https://github.com/COCOPi/cockpit/pull/423)
@@ -34,8 +39,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.2...HEAD
-[v1.1.1]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.1...v1.1.2
+[Unreleased]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.3...HEAD
+[v1.1.3]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.2...v1.1.3
+[v1.1.2]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.1...v1.1.2
 [v1.1.1]: https://github.com/piotr-cz/cockpit-import/compare/v1.1.0...v1.1.1
 [v1.1.0]: https://github.com/piotr-cz/cockpit-import/compare/v1.0.0...v1.1.0
 [v1.0.0]: https://github.com/piotr-cz/cockpit-import/compare/v1.0.0-rc.1...v1.0.0
