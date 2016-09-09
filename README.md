@@ -28,6 +28,8 @@ Module for importing spreadsheet as collection entries in [Cockpit CMS](http://g
 
 ## Installation
 
+### Manual
+
 1. Download [latest release](https://github.com/piotr-cz/import/releases/latest) and place in `[cockpit-path]/modules/addons/Import` or
    ```sh
    cd [cockpit-path]/modules/addons
@@ -38,6 +40,21 @@ Module for importing spreadsheet as collection entries in [Cockpit CMS](http://g
 
 3. In top-right corner you'll see _Import_ button.
 
+### Using composer
+
+1. In composer.json add path where cockpit modules are located:
+   ```json
+   "extra": {
+       "installer-paths": {
+           "cockpit/modules/addons/{$name}": ["type:cockpit-module"]
+       }
+   },
+```
+
+2. Install module using command
+   ```sh
+   composer require piotr-cz/cockpit-import
+   ```
 
 ## Usage
 

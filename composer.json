@@ -17,7 +17,7 @@
     },
     "require": {
         "php": ">= 5.3.10",
-        "composer/installers": "dev-master#1c0cdf3ecd2ed01cb3375902e62fe641a9ab68cb"
+        "composer/installers": "^1.2.0"
     },
     "suggest": {
         "aheinze/cockpit": "Please install Cockpit before installing this module"
