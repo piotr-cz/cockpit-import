@@ -49,7 +49,7 @@ Module for importing spreadsheet as collection entries in [Cockpit CMS](http://g
            "cockpit/modules/addons/{$name}": ["type:cockpit-module"]
        }
    },
-```
+   ```
 
 2. Install module using command
    ```sh
