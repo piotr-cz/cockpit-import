@@ -30,7 +30,7 @@ Module for importing spreadsheet as collection entries in [Cockpit CMS](http://g
 
 ### Manual
 
-1. Download [latest release](https://github.com/piotr-cz/import/releases/latest) and place in `[cockpit-path]/modules/addons/Import` or
+1. Download [latest release](https://github.com/piotr-cz/cockpit-import/releases/latest) and place in `[cockpit-path]/modules/addons/Import` or
    ```sh
    cd [cockpit-path]/modules/addons
    git clone https://github.com/piotr-cz/cockpit-import Import
