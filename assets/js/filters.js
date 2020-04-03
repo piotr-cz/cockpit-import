@@ -130,7 +130,7 @@
         locationCockpitFilter.label = App.i18n.get('import.filter.location');
         locationCockpitFilter.supports = ['location'];
         locationCockpitFilter.$stateful = true;
-        locationCockpitFilter.delay = 1e3;
+        locationCockpitFilter.delay = 2e3;
 
         /** @type {google.maps.Geocoder} Cached geocoder */
         var geocoder;
@@ -192,6 +192,9 @@
                     }
 
                 // Probably status is google.maps.GeocoderStatus.OVER_QUERY_LIMIT
+                // See https://developers.google.com/maps/premium/previous-licenses/articles/usage-limits
+                // To tweak go to Google Cloud Platform Console > IAM & Admin > Quotas > Geocoding API
+                // ..or increase locationCockpitFilter.delay to 2s 
                 } else if (options.deferred) {
 
                     options.deferred.reject(status);
