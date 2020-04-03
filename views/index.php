@@ -5,11 +5,11 @@
 ?>
 @start('header')
 
-    {{ $app->assets(['import:assets/import.css'], $meta->version) }}
+    {{ $app->assets(['import:assets/import.css'], $moduleMetadata->version) }}
 
-    {{ $app->assets(['import:assets/3p/papaparse.js'], $meta->version) }}
+    {{ $app->assets(['import:assets/3p/papaparse.js'], $moduleMetadata->version) }}
 
-    {{ $app->assets(['import:assets/import.js', 'import:assets/js/filters.js', 'import:assets/js/file.directive.js', 'import:assets/js/Processor.factory.js', 'import:assets/js/Parser.factory.js', 'import:assets/js/index.js'], $meta->version)}}
+    {{ $app->assets(['import:assets/import.js', 'import:assets/js/filters.js', 'import:assets/js/file.directive.js', 'import:assets/js/Processor.factory.js', 'import:assets/js/Parser.factory.js', 'import:assets/js/index.js'], $moduleMetadata->version)}}
 
     <script>
         // jshint ignore:start
