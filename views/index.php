@@ -264,7 +264,7 @@
                                             >
                                         </select>
                                     </td>
-                                    <td class="uk-text-truncate import-table-sample">
+                                    <td class="uk-text-break import-table-sample">
                                         @@ row.output @@
                                     </td>
                                 </tr>
